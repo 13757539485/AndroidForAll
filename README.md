@@ -1,2 +1,0 @@
-# AndroidForAll
-android study
