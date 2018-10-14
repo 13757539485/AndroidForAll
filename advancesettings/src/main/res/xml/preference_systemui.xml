@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+                  xmlns:manos="http://schemas.android.com/apk/res-auto"
+                  android:title="动作设置">
+    <CheckBoxPreference
+        android:title="亮度控制"
+        android:key="manos_statusbar_scroll_brightness"
+        android:summary="滑动状态栏调节亮度"
+        android:defaultValue="false" />
+    <ListPreference
+        android:entries="@array/ac"
+        android:title="双击状态栏"
+        android:key="manos_double_tap_action"
+        android:defaultValue="1"
+        android:entryValues="@array/ad" />
+    <ListPreference
+        android:entries="@array/ac"
+        android:title="长按状态栏"
+        android:key="manos_statusbar_long_action"
+        android:defaultValue="0"
+        android:entryValues="@array/ad" />
+    <PreferenceCategory android:title="桌面相关设置" />
+    <ListPreference
+        android:entries="@array/s"
+        android:title="桌面天气"
+        android:key="home_clock_switch_key"
+        android:summary="设置桌面天气风格"
+        android:defaultValue="0"
+        android:entryValues="@array/t" />
+    <ListPreference
+        android:entries="@array/av"
+        android:title="@string/cu"
+        android:key="home_workspace"
+        android:summary="选择桌面图标的排列布局"
+        android:defaultValue="4x5"
+        android:entryValues="@array/aw" />
+    <CheckBoxPreference
+        android:title="隐藏应用标题"
+        android:key="manos_Launcher_title"
+        android:summary="隐藏桌面所有应用的名字"
+        android:defaultValue="false" />
+    <PreferenceCategory android:title="状态栏隐形按键" />
+    <PreferenceScreen
+        android:title="隐形按键"
+        android:key="status_key"
+        android:summary="@string/g8" />
+    <ListPreference
+        android:entries="@array/ac"
+        android:title="单击动作"
+        android:key="manos_status_click"
+        android:summary="单击按键动作"
+        android:defaultValue="2"
+        android:entryValues="@array/ad" />
+    <ListPreference
+        android:entries="@array/ac"
+        android:title="长按动作"
+        android:key="manos_status_Long"
+        android:summary="长按按键动作"
+        android:defaultValue="9"
+        android:entryValues="@array/ad" />
+    <PreferenceCategory android:title="摇晃手机动作" />
+    <PreferenceScreen
+        android:title="摇晃手机"
+        android:key="status_shake"
+        android:summary="@string/g9" />
+    <ListPreference
+        android:entries="@array/ac"
+        android:title="摇晃功能选择"
+        android:key="manos_shake_action"
+        android:summary="设置摇晃手机动作功能"
+        android:defaultValue="0"
+        android:entryValues="@array/ad" />
+</PreferenceScreen>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="ac">
+        <item>无</item>
+        <item>锁屏</item>
+        <item>关机菜单</item>
+        <item>任务列表</item>
+        <item>结束进程</item>
+        <item>情景模式</item>
+        <item>屏幕截屏</item>
+        <item>启动电筒</item>
+        <item>移动数据</item>
+        <item>WLAN开关</item>
+        <item>蓝牙开关</item>
+        <item>清理内存</item>
+        <item>下拉通知</item>
+        <item>打开上个应用</item>
+        <item>自选应用程序</item>
+    </string-array>
+    <string-array name="ad">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>4</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>16</item>
+    </string-array>
+    <string-array name="s"/>
+    <string-array name="t"/>
+    <string-array name="av"/>
+    <string-array name="aw"/>
+</resources>
