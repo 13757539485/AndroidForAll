@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="15dp">
+
+    <TextView
+        android:id="@+id/name_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="命令名称:"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/shell_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/name_tag"
+        android:textSize="20sp"
+        />
+
+    <TextView
+        android:id="@+id/instruction_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/name_tag"
+        android:text="命令说明:"
+        android:textSize="20sp"
+        />
+
+    <TextView
+        android:id="@+id/shell_instruction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/name_tag"
+        android:layout_toEndOf="@id/instruction_tag"
+        android:textSize="20sp"
+        />
+
+    <Button
+        android:id="@+id/shell_execute"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:focusable="false"
+        android:text="执行命令"
+        android:visibility="gone"
+        />
+
+    <CheckBox
+        android:id="@+id/shell_check"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:focusable="false"
+        android:visibility="gone"
+        />
+
+</RelativeLayout>

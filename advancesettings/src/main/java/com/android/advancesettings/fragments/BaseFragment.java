@@ -9,7 +9,11 @@ public abstract class BaseFragment extends PreferenceFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(loadXml());
+        init();
     }
+
+
+    protected abstract void init();
 
     protected abstract int loadXml();
 }

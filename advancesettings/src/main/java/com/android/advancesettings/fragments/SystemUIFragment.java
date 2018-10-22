@@ -12,6 +12,11 @@ public class SystemUIFragment extends BaseFragment {
     }
 
     @Override
+    protected void init() {
+
+    }
+
+    @Override
     protected int loadXml() {
         return R.xml.preference_systemui;
     }
