@@ -42,6 +42,7 @@ public class CustomFragment extends Fragment implements View.OnClickListener {
     private View mDialogView;
     private DbUtil mDbUtil;
     private boolean isAdd = true;
+    private int mCurrentId;
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -71,6 +72,7 @@ public class CustomFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ShellView item = mShellAdapter.getItem(position);
+                mCurrentId = item.getId();
                 showModifyDialog(item);
             }
         });
@@ -234,6 +236,7 @@ public class CustomFragment extends Fragment implements View.OnClickListener {
                 if (isAdd) {
                     mDbUtil.insert(shellView);
                 } else {
+                    shellView.setId(mCurrentId);
                     mDbUtil.update(shellView);
                 }
                 mShellAdapter.addShellCommond(mDbUtil.findAll());

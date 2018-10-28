@@ -2,7 +2,6 @@ package com.android.advancesettings.adapter;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,8 +80,13 @@ public class ShellAdapter extends BaseAdapter {
                     @Override
                     public void onClick(View v) {
                         String path = item.getPath();
-                        String execute = ShellUtils.execute(path);
-                        showDialog(execute);
+                        ShellUtils.CommandResult commandResult = ShellUtils.execCommand(path + " &", false);
+                        int result = commandResult.result;
+                        if (result == 0) {
+                            showDialog("执行成功");
+                        }else {
+                            showDialog(commandResult.errorMsg);
+                        }
                     }
                 });
                 break;
@@ -94,10 +98,22 @@ public class ShellAdapter extends BaseAdapter {
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         if (isChecked) {
                             String checkOn = item.getCheckOn();
-                            ShellUtils.execute(checkOn);
-                        }else {
+                            ShellUtils.CommandResult commandResult = ShellUtils.execCommand(checkOn + " &", false);
+                            int result = commandResult.result;
+                            if (result == 0) {
+                                showDialog("执行成功");
+                            }else {
+                                showDialog(commandResult.errorMsg);
+                            }
+                        } else {
                             String checkOff = item.getCheckOff();
-                            ShellUtils.execute(checkOff);
+                            ShellUtils.CommandResult commandResult = ShellUtils.execCommand(checkOff + " &", false);
+                            int result = commandResult.result;
+                            if (result == 0) {
+                                showDialog("执行成功");
+                            }else {
+                                showDialog(commandResult.errorMsg);
+                            }
                         }
                     }
                 });
@@ -114,10 +130,9 @@ public class ShellAdapter extends BaseAdapter {
     }
 
     private AlertDialog showDialog(String result) {
-        Log.e("yuli", "showDialog: " + result);
         return new AlertDialog.Builder(mContext).setTitle("脚本执行")
                 .setMessage(result)
-                .setPositiveButton("确定",null)
+                .setPositiveButton("确定", null)
                 .show();
     }
 }

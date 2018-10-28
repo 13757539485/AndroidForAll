@@ -4,6 +4,7 @@
           package="com.android.advancesettings"
           android:sharedUserId="android.uid.system">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <application
         android:allowBackup="false"
         android:name=".SettingApplication"

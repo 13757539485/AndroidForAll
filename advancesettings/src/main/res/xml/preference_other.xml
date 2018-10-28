@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceScreen android:title="CPU调度" android:summary="As调度">
+        <Preference android:layout="@layout/none" android:key="system" />
+        <PreferenceCategory android:title="提示: 点击应用后立即生效，重启失效。" />
+        <PreferenceCategory android:title="                                           省电">
+            <Preference android:layout="@layout/sh_layout" android:key="sh /system/bin/Powersaving.sh" />
+        </PreferenceCategory>
+        <PreferenceCategory android:title="                                           均衡">
+            <Preference android:layout="@layout/sh_layout" android:key="sh /system/bin/Balanced.sh" />
+        </PreferenceCategory>
+        <PreferenceCategory android:title="                                           性能">
+            <Preference android:layout="@layout/sh_layout" android:key="sh /system/bin/Performance.sh" />
+        </PreferenceCategory>
+        <PreferenceCategory android:title="                                         低延迟">
+            <Preference android:layout="@layout/sh_layout" android:key="sh /system/bin/Lowlatency.sh" />
+        </PreferenceCategory>
+        <PreferenceCategory android:title="                                    MIUI官方调度">
+            <Preference android:layout="@layout/sh_layout" android:key="sh /system/bin/MIUI.sh" />
+        </PreferenceCategory>
+    </PreferenceScreen>
+    <PreferenceScreen android:title="MIUI状态栏布局" android:summary="时间居中布局丨MIUI官方布局切换">
+        <Preference android:layout="@layout/none" android:key="system" />
+        <PreferenceCategory android:title="提示: 点击应用后立即生效。" />
+        <PreferenceCategory android:title="布局A： \u0009时间居中丨网速居右">
+            <Preference android:layout="@layout/sh_layout" android:key="sh /system/bin/SystemUI_IOS.sh" />
+        </PreferenceCategory>
+        <PreferenceCategory android:title="布局B： \u0009MIUI官方默认布局">
+            <Preference android:layout="@layout/sh_layout" android:key="sh /system/bin/SystemUI_Default.sh" />
+        </PreferenceCategory>
+    </PreferenceScreen>
+    <PreferenceScreen android:title="状态栏时间格式" android:summary="状态栏显示丨农历丨星期丨时间丨">
+        <PreferenceCategory android:layout="@layout/none" />
+        <PreferenceCategory android:title="提示: 点击应用后，手机将会立刻自动重启，重启后生效。" />
+        <PreferenceCategory android:title="风格A： 显示农历丨星期丨时间">
+            <Preference android:layout="@layout/sh_layout" android:key="sh /system/bin/Clock_1.sh" />
+        </PreferenceCategory>
+        <PreferenceCategory android:title="风格B： 显示农历丨时间">
+            <Preference android:layout="@layout/sh_layout" android:key="sh /system/bin/Clock_2.sh" />
+        </PreferenceCategory>
+        <PreferenceCategory android:title="风格C： \u0009显示星期丨时间">
+            <Preference android:layout="@layout/sh_layout" android:key="sh /system/bin/Clock_3.sh" />
+        </PreferenceCategory>
+        <PreferenceCategory android:title="风格D： \u0009仅显示时间">
+            <Preference android:layout="@layout/sh_layout" android:key="sh /system/bin/Clock_4.sh" />
+        </PreferenceCategory>
+    </PreferenceScreen>
+    <PreferenceScreen android:title="MIUI桌面图标布局" android:summary="桌面 4x5丨4x6丨5x6丨5x7丨6x6丨6x7丨7×6丨7×7  布局切换">
+        <PreferenceCategory android:layout="@layout/none" />
+        <PreferenceCategory android:title="提示: 点击应用后立即生效。" />
+        <PreferenceCategory android:title="布局A： \u0009图标 4X5">
+            <Preference android:layout="@layout/sh_layout" android:key="sh /system/bin/Home_4X5.sh" />
+        </PreferenceCategory>
+        <PreferenceCategory android:title="布局B： \u0009图标 4X6">
+            <Preference android:layout="@layout/sh_layout" android:key="sh /system/bin/Home_4X6.sh" />
+        </PreferenceCategory>
+        <PreferenceCategory android:title="布局C： \u0009图标 5X6">
+            <Preference android:layout="@layout/sh_layout" android:key="sh /system/bin/Home_5X6.sh" />
+        </PreferenceCategory>
+        <PreferenceCategory android:title="布局D： \u0009图标 5X7">
+            <Preference android:layout="@layout/sh_layout" android:key="sh /system/bin/Home_5X7.sh" />
+        </PreferenceCategory>
+        <PreferenceCategory android:title="布局E： \u0009图标 6X6">
+            <Preference android:layout="@layout/sh_layout" android:key="sh /system/bin/Home_6X6.sh" />
+        </PreferenceCategory>
+        <PreferenceCategory android:title="布局F： \u0009图标 6X7">
+            <Preference android:layout="@layout/sh_layout" android:key="sh /system/bin/Home_6X7.sh" />
+        </PreferenceCategory>
+        <PreferenceCategory android:title="布局G： \u0009图标 7X6">
+            <Preference android:layout="@layout/sh_layout" android:key="sh /system/bin/Home_7X6.sh" />
+        </PreferenceCategory>
+        <PreferenceCategory android:title="布局H： \u0009图标 7X7">
+            <Preference android:layout="@layout/sh_layout" android:key="sh /system/bin/Home_7X7.sh" />
+        </PreferenceCategory>
+    </PreferenceScreen>
+    <PreferenceScreen android:title="系统精简" android:summary="自由选择系统应用进行精简删除操作">
+        <intent android:targetPackage="com.mayday.ashin.rom" android:action="android.intent.action.MAIN" android:targetClass="com.mayday.ashin.rom.MainActivity" />
+    </PreferenceScreen>
+    <PreferenceScreen android:title="ViPER4Android" android:summary="蝰蛇音效一键安装/卸载">
+        <Preference android:layout="@layout/none" android:key="system" />
+        <PreferenceCategory android:title="提示: 点击应用后，手机将会立刻自动重启，重启后生效。" />
+        <PreferenceCategory android:title="                                           安装">
+            <Preference android:layout="@layout/sh_layout" android:key="sh /system/bin/ViPER4.sh" />
+        </PreferenceCategory>
+        <PreferenceCategory android:title="                                           卸载">
+            <Preference android:layout="@layout/sh_layout" android:key="sh /system/bin/UnViPER4.sh" />
+        </PreferenceCategory>
+    </PreferenceScreen>
+    <PreferenceScreen android:title="MIUI全面屏" android:summary="开启MIUI全面屏手势并修复相机UI错位">
+        <Preference android:layout="@layout/none" android:key="system" />
+        <PreferenceCategory android:title="提示: 点击应用后，手机将会立刻自动重启，重启后生效。" />
+        <PreferenceCategory android:title="                                           开启">
+            <Preference android:layout="@layout/sh_layout" android:key="sh /system/bin/Mainkeys_1.sh" />
+        </PreferenceCategory>
+        <PreferenceCategory android:title="                                           关闭">
+            <Preference android:layout="@layout/sh_layout" android:key="sh /system/bin/Mainkeys_2.sh" />
+        </PreferenceCategory>
+    </PreferenceScreen>
+    <PreferenceScreen android:title="Hosts广告屏蔽" android:summary="屏蔽部分MIUI广告">
+        <Preference android:layout="@layout/none" android:key="system" />
+        <PreferenceCategory android:title="提示: 点击应用后立即生效。" />
+        <PreferenceCategory android:title="屏蔽MIUI广告(可能会造成部分应用功能无法联网)">
+            <Preference android:layout="@layout/sh_layout" android:key="sh /system/bin/Host.sh" />
+        </PreferenceCategory>
+        <PreferenceCategory android:title="取消屏蔽MIUI广告">
+            <Preference android:layout="@layout/sh_layout" android:key="sh /system/bin/Unhost.sh" />
+        </PreferenceCategory>
+    </PreferenceScreen>
+</PreferenceScreen>

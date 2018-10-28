@@ -29,7 +29,6 @@
         android:entryValues="@array/t" />
     <ListPreference
         android:entries="@array/av"
-        android:title="@string/cu"
         android:key="home_workspace"
         android:summary="选择桌面图标的排列布局"
         android:defaultValue="4x5"
@@ -43,7 +42,7 @@
     <PreferenceScreen
         android:title="隐形按键"
         android:key="status_key"
-        android:summary="@string/g8" />
+        />
     <ListPreference
         android:entries="@array/ac"
         android:title="单击动作"
@@ -62,7 +61,7 @@
     <PreferenceScreen
         android:title="摇晃手机"
         android:key="status_shake"
-        android:summary="@string/g9" />
+         />
     <ListPreference
         android:entries="@array/ac"
         android:title="摇晃功能选择"

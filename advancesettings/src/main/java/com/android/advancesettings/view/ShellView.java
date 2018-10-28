@@ -83,7 +83,8 @@ public class ShellView {
     @Override
     public String toString() {
         return "ShellView{" +
-                "name='" + name + '\'' +
+                "_id=" + _id +
+                ", name='" + name + '\'' +
                 ", instruction='" + instruction + '\'' +
                 ", type=" + type +
                 ", path='" + path + '\'' +

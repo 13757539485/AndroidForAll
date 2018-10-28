@@ -6,7 +6,8 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="cu"/>
-    <string name="g8"/>
-    <string name="g9"/>
+    <plurals name="tempuare">
+        <item quantity="one">%d°C</item>
+    </plurals>
+    <string name="no_weather_description">获取天气数据 ></string>
 </resources>

@@ -7,9 +7,121 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 
 public class ShellUtils {
+
+    public static final String TAG = "CommandExecution";
+
+    public final static String COMMAND_SU       = "su";
+    public final static String COMMAND_SH       = "sh";
+    public final static String COMMAND_EXIT     = "exit\n";
+    public final static String COMMAND_LINE_END = "\n";
+    public final static String COMMAND_MOUNT_SYSTEM = "mount -o rw,remount /system && chmod 755 ";
+
+    /**
+     * Command执行结果
+     * @author Mountain
+     *
+     */
+    public static class CommandResult {
+        public int result = -1;
+        public String errorMsg;
+        public String successMsg;
+
+        @Override
+        public String toString() {
+            return "CommandResult{" +
+                    "result=" + result +
+                    ", errorMsg='" + errorMsg + '\'' +
+                    ", successMsg='" + successMsg + '\'' +
+                    '}';
+        }
+    }
+
+    /**
+     * 执行命令—单条
+     * @param command
+     * @param isRoot
+     * @return
+     */
+    public static CommandResult execCommand(String command, boolean isRoot) {
+        String[] commands = {command};
+        return execCommand(commands, isRoot);
+    }
+
+    /**
+     * 执行命令-多条
+     * @param commands
+     * @param isRoot
+     * @return
+     */
+    public static CommandResult execCommand(String[] commands, boolean isRoot) {
+        CommandResult commandResult = new CommandResult();
+        if (commands == null || commands.length == 0) return commandResult;
+        Process process = null;
+        DataOutputStream os = null;
+        BufferedReader successResult = null;
+        BufferedReader errorResult = null;
+        StringBuilder successMsg;
+        StringBuilder errorMsg;
+        try {
+            process = Runtime.getRuntime().exec(isRoot ? COMMAND_SU : COMMAND_SH);
+            os = new DataOutputStream(process.getOutputStream());
+            for (String command : commands) {
+                if (command != null) {
+                    os.write(command.getBytes());
+                    os.writeBytes(COMMAND_LINE_END);
+                    os.flush();
+                }
+            }
+            os.writeBytes(COMMAND_EXIT);
+            os.flush();
+            commandResult.result = process.waitFor();
+            //获取错误信息
+            successMsg = new StringBuilder();
+            errorMsg = new StringBuilder();
+            successResult = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            errorResult = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+            String s;
+            while ((s = successResult.readLine()) != null) successMsg.append(s);
+            while ((s = errorResult.readLine()) != null) errorMsg.append(s);
+            commandResult.successMsg = successMsg.toString();
+            commandResult.errorMsg = errorMsg.toString();
+            Log.i(TAG, commandResult.result + " | " + commandResult.successMsg
+                    + " | " + commandResult.errorMsg);
+        } catch (IOException e) {
+            String errmsg = e.getMessage();
+            if (errmsg != null) {
+                Log.e(TAG, errmsg);
+            } else {
+                e.printStackTrace();
+            }
+        } catch (Exception e) {
+            String errmsg = e.getMessage();
+            if (errmsg != null) {
+                Log.e(TAG, errmsg);
+            } else {
+                e.printStackTrace();
+            }
+        } finally {
+            try {
+                if (os != null) os.close();
+                if (successResult != null) successResult.close();
+                if (errorResult != null) errorResult.close();
+            } catch (IOException e) {
+                String errmsg = e.getMessage();
+                if (errmsg != null) {
+                    Log.e(TAG, errmsg);
+                } else {
+                    e.printStackTrace();
+                }
+            }
+            if (process != null) process.destroy();
+        }
+        return commandResult;
+    }
+
+
     public static boolean canRunRootCommands() {
         boolean retval = false;
         Process suProcess;
@@ -59,78 +171,13 @@ public class ShellUtils {
         return retval;
     }
 
-    public static String execute(String commands) {
-        try {
-            Process process = Runtime.getRuntime().exec("su");
-            DataOutputStream os = new DataOutputStream(process.getOutputStream());
-            os.writeBytes("sh " + commands + "\n");
-            os.flush();
-            os.writeBytes("exit\n");
-            os.flush();
-
-            BufferedReader reader = new BufferedReader(new InputStreamReader(
-                    process.getInputStream()));
-            int read;
-            char[] buffer = new char[4096];
-            StringBuilder output = new StringBuilder();
-            while ((read = reader.read(buffer)) > 0) {
-                output.append(buffer, 0, read);
-            }
-            reader.close();
-            return output.toString();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return "";
+    public static String runRootCommandT(String command) throws IOException {
+        Process process = Runtime.getRuntime().exec("su");
+        DataOutputStream os = new DataOutputStream(process.getOutputStream());
+        DataInputStream input = new DataInputStream(process.getInputStream());
+        os.writeBytes(command + "\n");
+        os.writeBytes("exit\n");
+        os.flush();
+        return input.readLine();
     }
-
-    public static boolean execute(ArrayList<String> commands) {
-        boolean retval = false;
-        try {
-            if (null != commands && commands.size() > 0) {
-                Process process = Runtime.getRuntime().exec("su");
-
-                DataOutputStream os = new DataOutputStream(process.getOutputStream());
-
-                for (String currCommand : commands) {
-                    os.writeBytes(currCommand + "\n");
-                    os.flush();
-                }
-
-                os.writeBytes("exit\n");
-                os.flush();
-
-                BufferedReader reader = new BufferedReader(new InputStreamReader(
-                        process.getInputStream()));
-                int read;
-                char[] buffer = new char[4096];
-                StringBuffer output = new StringBuffer();
-                while ((read = reader.read(buffer)) > 0) {
-                    output.append(buffer, 0, read);
-                }
-                reader.close();
-
-                try {
-                    int suProcessRetval = process.waitFor();
-                    if (255 != suProcessRetval) {
-                        retval = true;
-                    } else {
-                        retval = false;
-                    }
-                    System.out.println("BBBB: " + output.toString());
-                } catch (Exception ex) {
-                    //Log.e("Error executing root action", ex);
-                }
-            }
-        } catch (IOException ex) {
-            Log.w("ROOT", "Can't get root access", ex);
-        } catch (SecurityException ex) {
-            Log.w("ROOT", "Can't get root access", ex);
-        } catch (Exception ex) {
-            Log.w("ROOT", "Error executing internal operation", ex);
-        }
-
-        return retval;
-    }
-
 }
