@@ -2,6 +2,8 @@ package com.android.advancesettings.adapter;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,7 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.android.advancesettings.R;
+import com.android.advancesettings.entity.ShellResult;
 import com.android.advancesettings.utils.ShellUtils;
 import com.android.advancesettings.view.ShellView;
 
@@ -21,6 +24,23 @@ public class ShellAdapter extends BaseAdapter {
     private Context mContext;
     private ArrayList<ShellView> mShellViews = new ArrayList<>();
     private LayoutInflater mInflater;
+    private Handler mHandler = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+            int what = msg.what;
+            switch (what) {
+                case 100:
+                    ShellResult shellResult = (ShellResult) msg.obj;
+                    if (shellResult.errorMsg == null) {
+                        showDialog("应用成功");
+                    } else {
+                        showDialog(shellResult.errorMsg);
+                    }
+                    break;
+            }
+            return false;
+        }
+    });
 
     public ShellAdapter(Context context) {
         mContext = context;
@@ -79,14 +99,18 @@ public class ShellAdapter extends BaseAdapter {
                 holder.mExecute.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String path = item.getPath();
-                        ShellUtils.CommandResult commandResult = ShellUtils.execCommand(path + " &", false);
-                        int result = commandResult.result;
-                        if (result == 0) {
-                            showDialog("执行成功");
-                        }else {
-                            showDialog(commandResult.errorMsg);
-                        }
+                        final String path = item.getPath();
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                ShellResult shellResult = ShellUtils.execSh(path);
+                                Message message = mHandler.obtainMessage();
+                                message.obj = shellResult;
+                                message.what = 100;
+                                mHandler.sendMessage(message);
+                            }
+                        }).start();
+
                     }
                 });
                 break;
@@ -96,25 +120,22 @@ public class ShellAdapter extends BaseAdapter {
                 holder.mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        final String str;
                         if (isChecked) {
-                            String checkOn = item.getCheckOn();
-                            ShellUtils.CommandResult commandResult = ShellUtils.execCommand(checkOn + " &", false);
-                            int result = commandResult.result;
-                            if (result == 0) {
-                                showDialog("执行成功");
-                            }else {
-                                showDialog(commandResult.errorMsg);
-                            }
+                            str = item.getCheckOn();
                         } else {
-                            String checkOff = item.getCheckOff();
-                            ShellUtils.CommandResult commandResult = ShellUtils.execCommand(checkOff + " &", false);
-                            int result = commandResult.result;
-                            if (result == 0) {
-                                showDialog("执行成功");
-                            }else {
-                                showDialog(commandResult.errorMsg);
-                            }
+                            str = item.getCheckOff();
                         }
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                ShellResult shellResult = ShellUtils.execSh(str);
+                                Message message = mHandler.obtainMessage();
+                                message.obj = shellResult;
+                                message.what = 100;
+                                mHandler.sendMessage(message);
+                            }
+                        }).start();
                     }
                 });
                 break;

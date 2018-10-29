@@ -22,7 +22,7 @@ public class SystemFragment extends BaseFragment implements Preference.OnPrefere
     private void Dpi() {
         this.mDensity = (EditTextPreference) findPreference("lcd_density_prefs_key");
         try {
-            this.mCurrentDPI = ShellUtils.runRootCommandT("cat /system/build.prop | busybox grep \"ro.sf.lcd_density\" | busybox sed 's/ro.sf.lcd_density=//g'\n");
+            this.mCurrentDPI = ShellUtils.catCommand("cat /system/build.prop | busybox grep \"ro.sf.lcd_density\" | busybox sed 's/ro.sf.lcd_density=//g'\n");
             this.mDensity.setPersistent(false);
             this.mDensity.setText(this.mCurrentDPI);
             this.mDensity.setDefaultValue(this.mCurrentDPI);
@@ -54,11 +54,12 @@ public class SystemFragment extends BaseFragment implements Preference.OnPrefere
                 Toast.makeText(getActivity(), "请输入100到540之间的数字", Toast.LENGTH_LONG).show();
                 return false;
             }
-            ShellUtils.execCommand("mount -o rw,remount /system", true);
+            ShellUtils.execCommand("mount -o rw,remount /system");
             try {
                 Thread.sleep(250);
-                ShellUtils.runRootCommandT(String.format("busybox sed -i 's/ro.sf.lcd_density=%s/ro.sf.lcd_density=%s/g' /system/build.prop\n", new Object[]{mCurrentDPI, str}));
-                if (ShellUtils.runRootCommandT("cat /system/build.prop | busybox grep \"ro.sf.lcd_density\"\n").contains(str)) {
+                ShellUtils.catCommand(String.format("busybox sed -i 's/ro.sf.lcd_density=%s/ro.sf.lcd_density=%s/g' /system/build.prop\n", new Object[]{mCurrentDPI, str}));
+                if (ShellUtils.catCommand("cat /system/build.prop | busybox grep \"ro.sf.lcd_density\"\n").contains(str)) {
+                    mCurrentDPI = str;
                     Toast.makeText(getActivity(), "修改成功，手动重启生效", Toast.LENGTH_LONG).show();
                 }
                 mDensity.setSummary("DPI值：" + str);
