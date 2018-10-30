@@ -32,29 +32,27 @@ public class ShellUtils {
 
     public static ShellResult execSh(String shPath) {
         ShellResult shellResult = new ShellResult();
-        BufferedReader successResult = null;
         BufferedReader errorResult = null;
         Process process = null;
         DataOutputStream execDos = null;
         try {
             process = Runtime.getRuntime().exec(COMMAND_SU);
             execDos = new DataOutputStream(process.getOutputStream());
-            execDos.writeBytes(COMMAND_SH + shPath + "\n");
+            execDos.writeBytes(COMMAND_SH + shPath + COMMAND_LINE_END);
+            execDos.writeBytes(COMMAND_EXIT);
             execDos.flush();
-            successResult = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            shellResult.setResult(process.waitFor());
             errorResult = new BufferedReader(new InputStreamReader(process.getErrorStream()));
-            StringBuilder successBuilder = new StringBuilder();
             StringBuilder errorBuilder = new StringBuilder();
             String temp;
-            while ((temp = successResult.readLine()) != null) successBuilder.append(temp);
-            while ((temp = errorResult.readLine()) != null) errorBuilder.append(temp);
-            shellResult.successMsg = successBuilder.toString();
-            shellResult.errorMsg = errorBuilder.toString();
-        } catch (IOException e) {
+            while ((temp = errorResult.readLine()) != null) {
+                errorBuilder.append(temp);
+            }
+            shellResult.setErrorMsg(errorBuilder.toString());
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         } finally {
             try {
-                if (successResult != null) successResult.close();
                 if (errorResult != null) errorResult.close();
                 if (execDos != null) execDos.close();
             } catch (IOException e) {
@@ -74,9 +72,7 @@ public class ShellUtils {
         ShellResult shellResult = new ShellResult();
         Process process = null;
         DataOutputStream os = null;
-        BufferedReader successResult = null;
         BufferedReader errorResult = null;
-        StringBuilder successMsg;
         StringBuilder errorMsg;
         try {
             process = Runtime.getRuntime().exec(COMMAND_SU);
@@ -91,23 +87,16 @@ public class ShellUtils {
             os.writeBytes(COMMAND_EXIT);
             os.flush();
             //获取错误信息
-            successMsg = new StringBuilder();
             errorMsg = new StringBuilder();
-            successResult = new BufferedReader(new InputStreamReader(process.getInputStream()));
             errorResult = new BufferedReader(new InputStreamReader(process.getErrorStream()));
             String s;
-            while ((s = successResult.readLine()) != null) successMsg.append(s);
             while ((s = errorResult.readLine()) != null) errorMsg.append(s);
-            shellResult.successMsg = successMsg.toString();
-            shellResult.errorMsg = errorMsg.toString();
-            Log.i(TAG, shellResult.successMsg
-                    + " | " + shellResult.errorMsg);
+            shellResult.setErrorMsg(errorMsg.toString());
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             try {
                 if (os != null) os.close();
-                if (successResult != null) successResult.close();
                 if (errorResult != null) errorResult.close();
             } catch (IOException e) {
                 e.printStackTrace();

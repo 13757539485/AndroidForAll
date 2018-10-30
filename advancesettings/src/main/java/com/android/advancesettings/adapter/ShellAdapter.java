@@ -31,10 +31,11 @@ public class ShellAdapter extends BaseAdapter {
             switch (what) {
                 case 100:
                     ShellResult shellResult = (ShellResult) msg.obj;
-                    if (shellResult.errorMsg == null) {
-                        showDialog("应用成功");
-                    } else {
-                        showDialog(shellResult.errorMsg);
+                    int result = shellResult.getResult();
+                    if (result == 0) {
+                        showDialog(shellResult.getSuccessMsg());
+                    }else {
+                        showDialog(shellResult.getErrorMsg());
                     }
                     break;
             }

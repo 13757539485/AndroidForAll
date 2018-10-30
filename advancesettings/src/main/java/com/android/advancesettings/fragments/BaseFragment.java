@@ -21,10 +21,11 @@ public abstract class BaseFragment extends PreferenceFragment {
             switch (what) {
                 case 100:
                     ShellResult shellResult = (ShellResult) msg.obj;
-                    if (shellResult.errorMsg == null) {
-                        showDialog("应用成功");
-                    } else {
-                        showDialog(shellResult.errorMsg);
+                    int result = shellResult.getResult();
+                    if (result == 0) {
+                        showDialog(shellResult.getSuccessMsg());
+                    }else {
+                        showDialog(shellResult.getErrorMsg());
                     }
                     break;
             }
@@ -48,7 +49,7 @@ public abstract class BaseFragment extends PreferenceFragment {
         String key = preference.getKey();
         if (key != null && key.startsWith("sh")) {
             final String command = key.substring(3);
-            /*new Thread(new Runnable() {
+            new Thread(new Runnable() {
                 @Override
                 public void run() {
                     ShellResult shellResult = ShellUtils.execSh(command);
@@ -57,19 +58,13 @@ public abstract class BaseFragment extends PreferenceFragment {
                     message.what = 100;
                     mHandler.sendMessage(message);
                 }
-            }).start();*/
-            ShellResult shellResult = ShellUtils.execCommand(command);
-            if (shellResult.successMsg != null) {
-                showDialog("应用成功");
-            }else {
-                showDialog(shellResult.errorMsg);
-            }
+            }).start();
         }
         return super.onPreferenceTreeClick(preferenceScreen, preference);
     }
 
     private void showDialog(String result) {
-        new AlertDialog.Builder(getActivity()).setTitle("脚本执行")
+        new AlertDialog.Builder(getActivity()).setTitle("脚本执行结果")
                 .setMessage(result)
                 .setPositiveButton("确定", null)
                 .show();

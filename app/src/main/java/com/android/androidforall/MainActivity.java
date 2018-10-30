@@ -3,6 +3,8 @@ package com.android.androidforall;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 
 import java.io.BufferedReader;
@@ -10,7 +12,19 @@ import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 
 public class MainActivity extends Activity {
-
+    private Handler mHandler = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+            int what = msg.what;
+            switch (what) {
+                case 100:
+                    String shellResult = (String) msg.obj;
+                    showDialog(shellResult);
+                    break;
+            }
+            return false;
+        }
+    });
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -18,11 +32,26 @@ public class MainActivity extends Activity {
     }
 
     public void btnOnClick(View view) {
+        new Thread(new Runnable() {
+                @Override
+                public void run() {
+
+                    String exec = exec();
+                    Message message = mHandler.obtainMessage();
+                    message.obj = exec;
+                    message.what = 100;
+                    mHandler.sendMessage(message);
+                }
+            }).start();
+    }
+
+    private String exec() {
+        String str = "";
         try {
             Process process = Runtime.getRuntime().exec("su");
             DataOutputStream localDataOutputStream = new DataOutputStream(
                     process.getOutputStream());
-            localDataOutputStream.writeBytes("sh  /sdcard/1/123.sh\n");
+            localDataOutputStream.writeBytes("sh /system/123.sh\n");
             localDataOutputStream.flush();
             localDataOutputStream.close();
             BufferedReader successResult = new BufferedReader(new InputStreamReader(process.getInputStream()));
@@ -31,13 +60,14 @@ public class MainActivity extends Activity {
             String success = successResult.readLine();
             String error = errorResult.readLine();
             if (success == null) {
-                showDialog(error);
+                str = success;
             } else {
-                showDialog(success);
+                str = error;
             }
         } catch (Exception e) {
 
         }
+        return str;
     }
 
     private void showDialog(String string) {

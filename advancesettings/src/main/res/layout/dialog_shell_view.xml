@@ -7,24 +7,29 @@
 
     <EditText
         android:id="@+id/edit_name"
+        android:hint="命令名称"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
     <EditText
         android:id="@+id/edit_instruction"
+        android:hint="命令说明"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
+    <TextView
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="10sp"
+        android:text="类型选择："/>
+
     <RadioGroup
         android:id="@+id/radio_group"
+        android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="类型选择："/>
 
         <RadioButton
             android:id="@+id/check_type_exec"
@@ -46,6 +51,7 @@
     </RadioGroup>
 
     <LinearLayout
+        android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -54,11 +60,13 @@
             android:id="@+id/btn_select_file_on"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="选择路径(开启)"/>
+            android:text="路径(开启)"/>
 
         <TextView
             android:id="@+id/show_file_path_on"
+            android:layout_marginStart="5dp"
             android:layout_width="wrap_content"
+            android:singleLine="true"
             android:layout_height="wrap_content"/>
     </LinearLayout>
 
@@ -73,11 +81,13 @@
             android:id="@+id/btn_select_file_off"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="选择路径(关闭)"/>
+            android:text="路径(关闭)"/>
 
         <TextView
             android:id="@+id/show_file_path_off"
+            android:layout_marginStart="5dp"
             android:layout_width="wrap_content"
+            android:singleLine="true"
             android:layout_height="wrap_content"/>
     </LinearLayout>
 
