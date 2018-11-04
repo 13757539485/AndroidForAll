@@ -3,23 +3,11 @@
     <PreferenceCategory android:title="屏幕密度">
         <EditTextPreference android:title="DPI" android:key="lcd_density_prefs_key" />
     </PreferenceCategory>
-    <PreferenceScreen android:title="CPU调度" android:summary="As调度">
-        <Preference android:layout="@layout/none" android:key="system" />
-        <PreferenceCategory android:title="提示: 点击应用后立即生效，重启失效。" />
-        <PreferenceCategory android:title="                                           省电">
-            <Preference android:layout="@layout/sh_layout" android:key="sh /system/bin/Powersaving.sh" />
-        </PreferenceCategory>
-        <PreferenceCategory android:title="                                           均衡">
-            <Preference android:layout="@layout/sh_layout" android:key="sh /system/bin/Balanced.sh" />
-        </PreferenceCategory>
-        <PreferenceCategory android:title="                                           性能">
-            <Preference android:layout="@layout/sh_layout" android:key="sh /system/bin/Performance.sh" />
-        </PreferenceCategory>
-        <PreferenceCategory android:title="                                         低延迟">
-            <Preference android:layout="@layout/sh_layout" android:key="sh /system/bin/Lowlatency.sh" />
-        </PreferenceCategory>
-        <PreferenceCategory android:title="                                    MIUI官方调度">
-            <Preference android:layout="@layout/sh_layout" android:key="sh /system/bin/MIUI.sh" />
-        </PreferenceCategory>
-    </PreferenceScreen>
+    <PreferenceCategory android:title="WLAN密码">
+        <PreferenceScreen
+            android:summary="查看已连接过的WiFi名称及密码"
+            android:title="WLAN密码">
+            <intent android:action="com.android.advance.LIST_WIFI"/>
+        </PreferenceScreen>
+    </PreferenceCategory>
 </PreferenceScreen>

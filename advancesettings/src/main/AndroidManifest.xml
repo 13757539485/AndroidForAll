@@ -5,6 +5,7 @@
           android:sharedUserId="android.uid.system">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
     <application
         android:allowBackup="false"
         android:name=".SettingApplication"
@@ -16,6 +17,12 @@
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".WifiActivity" android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="com.android.advance.LIST_WIFI"/>
+                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
     </application>

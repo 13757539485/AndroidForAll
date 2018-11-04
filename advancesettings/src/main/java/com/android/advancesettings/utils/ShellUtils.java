@@ -87,6 +87,7 @@ public class ShellUtils {
             os.writeBytes(COMMAND_EXIT);
             os.flush();
             //获取错误信息
+            shellResult.setResult(process.waitFor());
             errorMsg = new StringBuilder();
             errorResult = new BufferedReader(new InputStreamReader(process.getErrorStream()));
             String s;
@@ -145,6 +146,13 @@ public class ShellUtils {
                     "Root access rejected [" + e.getClass().getName() + "] : " + e.getMessage());
         }
         return retval;
+    }
+
+    public static boolean mountData() {
+        ShellResult shellResult = execCommand("system/bin/mount -o rw,remount -t rootfs /data");
+        int result = shellResult.getResult();
+        Log.e(TAG, "mountData: " + shellResult);
+        return result == 0;
     }
 
     public static String catCommand(String command) throws IOException {

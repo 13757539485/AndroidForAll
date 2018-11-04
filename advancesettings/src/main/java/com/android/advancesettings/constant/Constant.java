@@ -9,4 +9,7 @@ public class Constant {
     public static final String CHECKON = "checkOn";
     public static final String CHECKOFF = "checkOff";
     public static final String _ID = "_id";
+    //wifi
+    public static final String WIFI_CONFIG_PATH_NEW = "/data/misc/wifi/WifiConfigStore.xml";
+    public static final String WIFI_CONFIG_PATH = "/data/misc/wifi/wpa_supplicant.conf";
 }
