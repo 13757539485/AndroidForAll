@@ -6,4 +6,5 @@
         <item quantity="one">%d°C</item>
     </plurals>
     <string name="no_weather_description">获取天气数据 ></string>
+    <string name="title_activity_xxx">xxxActivity</string>
 </resources>

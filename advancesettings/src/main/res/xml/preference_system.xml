@@ -10,4 +10,11 @@
             <intent android:action="com.android.advance.LIST_WIFI"/>
         </PreferenceScreen>
     </PreferenceCategory>
+    <PreferenceCategory android:title="应用管理">
+        <PreferenceScreen
+            android:summary="卸载普通应用甚至系统应用"
+            android:title="应用卸载器">
+            <intent android:action="com.android.advance.UNINSTALL"/>
+        </PreferenceScreen>
+    </PreferenceCategory>
 </PreferenceScreen>
