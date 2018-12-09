@@ -5,7 +5,6 @@ package com.android.advancesettings.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.text.format.Formatter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,64 +16,62 @@ import android.widget.TextView;
 import com.android.advancesettings.R;
 import com.android.advancesettings.entity.AppBean;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class AppAdapter extends BaseAdapter {
-    public static final int SORT_BY_DATE_ASC = 4;
-    public static final int SORT_BY_DATE_DESC = 5;
-    public static final int SORT_BY_NAME_ASC = 0;
-    public static final int SORT_BY_NAME_DESC = 1;
-    public static final int SORT_BY_SIZE_ASC = 2;
-    public static final int SORT_BY_SIZE_DESC = 3;
     private Context mContext;
-    private int mCurrentSortType = -1;
     private LayoutInflater mInflater;
-    private List<AppBean> mList;
+    private ArrayList<AppBean> mList = new ArrayList<>();
+    private boolean isMultipleMode;
+    private ArrayList<AppBean> mSelectItems = new ArrayList<>();
 
-    public AppAdapter(Context context, List<AppBean> list) {
+    public AppAdapter(Context context) {
         this.mContext = context;
         this.mInflater = LayoutInflater.from(context);
-        this.mList = list;
     }
-
-    /*private void sort() {
-        switch (this.mCurrentSortType) {
-            case SORT_BY_NAME_ASC *//*0*//*:
-                Collections.sort(this.mList, new AppNameComparator(true));
-                return;
-            case SORT_BY_NAME_DESC *//*1*//*:
-                Collections.sort(this.mList, new AppNameComparator(false));
-                return;
-            case SORT_BY_SIZE_ASC *//*2*//*:
-                Collections.sort(this.mList, new AppSizeComparator(true));
-                return;
-            case SORT_BY_SIZE_DESC *//*3*//*:
-                Collections.sort(this.mList, new AppSizeComparator(false));
-                return;
-            case SORT_BY_DATE_ASC *//*4*//*:
-                Collections.sort(this.mList, new AppLastModifiedComparator(true));
-                return;
-            case SORT_BY_DATE_DESC *//*5*//*:
-                Collections.sort(this.mList, new AppLastModifiedComparator(false));
-                return;
-            default:
-                return;
-        }
-    }*/
 
     public void addAll(List<AppBean> list) {
         this.mList.addAll(list);
+        notifyDataSetChanged();
+    }
+
+    public void removeSelectItems() {
+        mSelectItems.clear();
+        notifyDataSetChanged();
+    }
+
+    public boolean isMultipleMode() {
+        return isMultipleMode;
+    }
+
+    public void setMultipleMode(boolean multipleMode) {
+        isMultipleMode = multipleMode;
+        if (!isMultipleMode) {
+            mSelectItems.clear();
+        }
+        notifyDataSetChanged();
+    }
+
+    public void addSelectItem(AppBean appBean) {
+        if (mSelectItems.contains(appBean)) {
+            mSelectItems.remove(appBean);
+        }else {
+            mSelectItems.add(appBean);
+        }
+        notifyDataSetChanged();
+    }
+
+    public ArrayList<AppBean> getSelectItems() {
+        return mSelectItems;
+    }
+
+    public boolean hasSelectItem() {
+        return mSelectItems.size() > 0;
     }
 
     public int getCount() {
         return this.mList.size();
-    }
-
-    public int getCurrentSortType() {
-        return this.mCurrentSortType;
     }
 
     public AppBean getItem(int i) {
@@ -93,8 +90,6 @@ public class AppAdapter extends BaseAdapter {
             holder.mAppIcon = view.findViewById(R.id.app_icon);
             holder.mTitleTextView = view.findViewById(R.id.app_title);
             holder.mDescriptionTextView = view.findViewById(R.id.app_package);
-            holder.mTimeTextView = view.findViewById(R.id.app_last_modified);
-            holder.mSizeTextView = view.findViewById(R.id.app_size);
             holder.mCheckBox = view.findViewById(R.id.app_select);
             view.setTag(holder);
         } else {
@@ -108,31 +103,25 @@ public class AppAdapter extends BaseAdapter {
         } else {
             holder.mTitleTextView.setTextColor(Color.GRAY);
         }
-        holder.mDescriptionTextView.setText(item.getDescription());
-        holder.mSizeTextView.setText(Formatter.formatFileSize(this.mContext, item.getSize()));
-        holder.mTimeTextView.setText(new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date(item.getLastModified())));
-        holder.mCheckBox.setChecked(item.isChecked());
+        holder.mDescriptionTextView.setText(item.getAppPackage());
+        if (isMultipleMode()) {
+            holder.mCheckBox.setVisibility(View.VISIBLE);
+            holder.mCheckBox.setChecked(mSelectItems.contains(item));
+        } else {
+            holder.mCheckBox.setVisibility(View.GONE);
+        }
         return view;
     }
 
     private class ViewHolder{
         TextView mDescriptionTextView;
         TextView mTitleTextView;
-        TextView mSizeTextView;
-        TextView mTimeTextView;
         CheckBox mCheckBox;
         ImageView mAppIcon;
     }
 
     public void remove(AppBean item) {
         this.mList.remove(item);
-    }
-
-    public void sort(int i) {
-        if (i != this.mCurrentSortType) {
-            this.mCurrentSortType = i;
-            //sort();
-            notifyDataSetChanged();
-        }
+        notifyDataSetChanged();
     }
 }

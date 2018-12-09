@@ -7,4 +7,7 @@
     </plurals>
     <string name="no_weather_description">获取天气数据 ></string>
     <string name="title_activity_xxx">xxxActivity</string>
+    <string name="all_application">所有应用</string>
+    <string name="system_application">系统应用</string>
+    <string name="third_application">第三方应用</string>
 </resources>

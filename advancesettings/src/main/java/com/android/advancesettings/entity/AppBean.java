@@ -3,25 +3,35 @@
 //
 package com.android.advancesettings.entity;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
+
+import java.util.Objects;
 
 public class AppBean {
     private String apkPath;
     private boolean checked;
-    private String description;
+    private String appPackage;
     private Drawable icon;
     private String label;
-    private long lastModified;
-    private long size;
     private boolean system;
     private String version;
+    private Intent launcherIntent;
+
+    public Intent getLauncherIntent() {
+        return launcherIntent;
+    }
+
+    public void setLauncherIntent(Intent launcherIntent) {
+        this.launcherIntent = launcherIntent;
+    }
 
     public String getApkPath() {
         return this.apkPath;
     }
 
-    public String getDescription() {
-        return this.description;
+    public String getAppPackage() {
+        return this.appPackage;
     }
 
     public Drawable getIcon() {
@@ -30,14 +40,6 @@ public class AppBean {
 
     public String getLabel() {
         return this.label;
-    }
-
-    public long getLastModified() {
-        return this.lastModified;
-    }
-
-    public long getSize() {
-        return this.size;
     }
 
     public String getTitle() {
@@ -64,8 +66,8 @@ public class AppBean {
         this.checked = z;
     }
 
-    public void setDescription(String str) {
-        this.description = str;
+    public void setPackage(String str) {
+        this.appPackage = str;
     }
 
     public void setIcon(Drawable drawable) {
@@ -76,19 +78,24 @@ public class AppBean {
         this.label = str;
     }
 
-    public void setLastModified(long j) {
-        this.lastModified = j;
-    }
-
-    public void setSize(long j) {
-        this.size = j;
-    }
-
     public void setSystem(boolean z) {
         this.system = z;
     }
 
     public void setVersion(String str) {
         this.version = str;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AppBean appBean = (AppBean) o;
+        return Objects.equals(appPackage, appBean.appPackage);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(appPackage);
     }
 }
