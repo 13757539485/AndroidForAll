@@ -18,7 +18,7 @@
             android:background="@drawable/menu_text_shape"
             android:text="@string/all_application"
             android:textColor="#fff"
-            android:textSize="20sp"/>
+            android:textSize="16sp"/>
 
         <ImageView
             android:layout_width="wrap_content"
@@ -40,7 +40,7 @@
             android:background="@drawable/menu_text_shape"
             android:text="@string/system_application"
             android:textColor="#fff"
-            android:textSize="20sp"/>
+            android:textSize="16sp"/>
 
         <ImageView
             android:layout_width="wrap_content"
@@ -63,7 +63,7 @@
             android:background="@drawable/menu_text_shape"
             android:text="@string/third_application"
             android:textColor="#fff"
-            android:textSize="20sp"/>
+            android:textSize="16sp"/>
 
         <ImageView
             android:layout_width="wrap_content"

@@ -10,7 +10,7 @@ import java.util.Objects;
 
 public class AppBean {
     private String apkPath;
-    private boolean checked;
+    private boolean isDisable;
     private String appPackage;
     private Drawable icon;
     private String label;
@@ -50,8 +50,8 @@ public class AppBean {
         return this.version;
     }
 
-    public boolean isChecked() {
-        return this.checked;
+    public boolean isDisable() {
+        return this.isDisable;
     }
 
     public boolean isSystem() {
@@ -62,8 +62,8 @@ public class AppBean {
         this.apkPath = str;
     }
 
-    public void setChecked(boolean z) {
-        this.checked = z;
+    public void setDisable(boolean z) {
+        this.isDisable = z;
     }
 
     public void setPackage(String str) {

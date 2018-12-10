@@ -8,46 +8,72 @@
 
     <TextView
         android:id="@+id/title_app"
-        android:text="显示已安装的所有应用"
-        android:padding="10dp"
-        android:background="#ffffff"
-        android:textSize="16sp"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:background="#ffffff"
+        android:padding="10dp"
+        android:paddingEnd="20dp"
+        android:paddingStart="20dp"
+        android:text="注：红色字体为系统应用"
+        android:textSize="16sp"/>
 
     <ListView
         android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#ffffff"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
-        android:dividerHeight="1dp"
         android:layout_marginTop="40dp"
-        android:divider="#d0d0d0">
+        android:background="#ffffff"
+        android:divider="#d0d0d0"
+        android:dividerHeight="1dp"
+        android:paddingEnd="20dp"
+        android:paddingStart="20dp">
 
     </ListView>
 
     <TextView
         android:id="@android:id/empty"
-        android:visibility="gone"
-        android:layout_marginTop="40dp"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:text="没有应用"
+        android:paddingEnd="20dp"
+        android:paddingStart="20dp"
+        android:visibility="gone"/>
 
 
-    <ImageView
-        android:id="@+id/menu_button"
-        android:src="@mipmap/more"
-        android:scaleType="fitCenter"
-        android:layout_gravity="bottom|end"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="15dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:gravity="center_vertical|end"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_gravity="bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/menu_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitCenter"
+            android:src="@mipmap/menu"/>
+
+        <ImageView
+            android:id="@+id/refrigerator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:scaleType="fitCenter"
+            android:src="@mipmap/recovery"/>
+
+        <ImageView
+            android:id="@+id/delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitCenter"
+            android:src="@mipmap/delete"
+            android:visibility="gone"/>
+    </LinearLayout>
+
 </FrameLayout>
 

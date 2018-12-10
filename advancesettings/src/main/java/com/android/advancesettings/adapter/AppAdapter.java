@@ -5,6 +5,9 @@ package com.android.advancesettings.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.StrikethroughSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +34,10 @@ public class AppAdapter extends BaseAdapter {
         this.mInflater = LayoutInflater.from(context);
     }
 
-    public void addAll(List<AppBean> list) {
+    public void addAll(List<AppBean> list, boolean clear) {
+        if (clear) {
+            mList.clear();
+        }
         this.mList.addAll(list);
         notifyDataSetChanged();
     }
@@ -97,13 +103,16 @@ public class AppAdapter extends BaseAdapter {
         }
         AppBean item = getItem(position);
         holder.mAppIcon.setImageDrawable(item.getIcon());
-        holder.mTitleTextView.setText(item.getTitle());
+        boolean disable = item.isDisable();
+        String title = item.getTitle();
+        holder.mTitleTextView.setText(disable ? getDisableText(title) : title);
         if (item.isSystem()) {
             holder.mTitleTextView.setTextColor(Color.RED);
         } else {
             holder.mTitleTextView.setTextColor(Color.GRAY);
         }
-        holder.mDescriptionTextView.setText(item.getAppPackage());
+        String appPackage = item.getAppPackage();
+        holder.mDescriptionTextView.setText(disable ? getDisableText(appPackage) : appPackage);
         if (isMultipleMode()) {
             holder.mCheckBox.setVisibility(View.VISIBLE);
             holder.mCheckBox.setChecked(mSelectItems.contains(item));
@@ -123,5 +132,12 @@ public class AppAdapter extends BaseAdapter {
     public void remove(AppBean item) {
         this.mList.remove(item);
         notifyDataSetChanged();
+    }
+
+    private SpannableString getDisableText(String text) {
+        SpannableString spannableString = new SpannableString(text);
+        StrikethroughSpan span = new StrikethroughSpan();
+        spannableString.setSpan(span, 0, text.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        return spannableString;
     }
 }
