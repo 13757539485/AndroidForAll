@@ -1,7 +1,7 @@
-package com.android.mvp.ipinfo;
+package com.android.mvp.main.contract;
 
 import com.android.mvp.BaseView;
-import com.android.mvp.model.IpInfo;
+import com.android.mvp.bean.IpInfo;
 
 /**
  * 定义获取数据方法

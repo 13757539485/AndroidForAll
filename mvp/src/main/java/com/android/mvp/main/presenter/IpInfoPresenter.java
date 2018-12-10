@@ -1,7 +1,8 @@
-package com.android.mvp.ipinfo;
+package com.android.mvp.main.presenter;
 
-import com.android.mvp.model.IpInfo;
+import com.android.mvp.bean.IpInfo;
 import com.android.mvp.LoadTasksCallBack;
+import com.android.mvp.main.contract.IpInfoContract;
 import com.android.mvp.net.NetTask;
 
 /**

@@ -1,7 +1,7 @@
 package com.android.mvp.net;
 
 import com.android.mvp.LoadTasksCallBack;
-import com.android.mvp.model.IpInfo;
+import com.android.mvp.bean.IpInfo;
 
 import cn.finalteam.okhttpfinal.BaseHttpRequestCallback;
 import cn.finalteam.okhttpfinal.HttpRequest;

@@ -3,6 +3,7 @@
           package="com.android.mvp">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -11,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ipinfo.IpInfoActivity">
+        <activity android:name=".main.view.IpInfoActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

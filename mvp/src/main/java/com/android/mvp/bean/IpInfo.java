@@ -1,4 +1,4 @@
-package com.android.mvp.model;
+package com.android.mvp.bean;
 
 /**
  * Model
