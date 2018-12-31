@@ -25,7 +25,7 @@ import java.util.Map;
 
 import miui.preference.PreferenceActivity;
 
-public class WifiActivity extends PreferenceActivity implements AdapterView.OnItemClickListener{
+public class WifiActivity extends PreferenceActivity implements AdapterView.OnItemClickListener {
 
     private ListView mWifiList;
     private WifiAdapter mWifiAdapter;
@@ -51,7 +51,7 @@ public class WifiActivity extends PreferenceActivity implements AdapterView.OnIt
         setTheme(miui.R.style.Theme_Light_Settings);
         super.onCreate(savedInstanceState);
         miui.app.ActionBar actionBar = getActionBar();
-        actionBar.setTitle("Wifi列表");
+        actionBar.setTitle(R.string.wifi_title);
         if (ShellUtils.mountData()) {
             setContentView(R.layout.activity_wifi);
             mClipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
@@ -68,7 +68,7 @@ public class WifiActivity extends PreferenceActivity implements AdapterView.OnIt
             mWifiRunnable = new WifiRunnable(path);
             new Thread(mWifiRunnable).start();
         } else {
-            Toast.makeText(this, "无法获取Root", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.unable_to_get_root, Toast.LENGTH_SHORT).show();
             finish();
         }
     }
@@ -90,7 +90,10 @@ public class WifiActivity extends PreferenceActivity implements AdapterView.OnIt
 
     private void showDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        String[] items = new String[]{"复制帐号","复制密码","复制帐号和密码","更多操作"};
+        String[] items = new String[]{getString(R.string.copy_username),
+                getString(R.string.copy_pwd),
+                getString(R.string.copy_username_and_pwd),
+                getString(R.string.more_operation)};
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -103,7 +106,8 @@ public class WifiActivity extends PreferenceActivity implements AdapterView.OnIt
                         copy(item.get("psk"));
                         break;
                     case 2:
-                        copy("WIFI名称:" + item.get("ssid") + "\nWIFI密码:"+ item.get("psk"));
+                        copy(getString(R.string.wifi_name, item.get("ssid")) + "\n"
+                                + getString(R.string.wifi_pwd, item.get("psk")));
                         break;
                     case 3:
                         Intent intent = new Intent();
@@ -120,9 +124,9 @@ public class WifiActivity extends PreferenceActivity implements AdapterView.OnIt
 
     private void copy(String text) {
         if (mClipboard != null) {
-            ClipData clip = ClipData.newPlainText("simple text",text);
+            ClipData clip = ClipData.newPlainText("simple text", text);
             mClipboard.setPrimaryClip(clip);
-            Toast.makeText(this, "已复制到剪切版！", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.already_copy, Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -10,6 +10,7 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
 import android.support.annotation.Nullable;
 
+import com.android.advancesettings.R;
 import com.android.advancesettings.entity.ShellResult;
 import com.android.advancesettings.utils.ShellUtils;
 
@@ -64,9 +65,9 @@ public abstract class BaseFragment extends PreferenceFragment {
     }
 
     private void showDialog(String result) {
-        new AlertDialog.Builder(getActivity()).setTitle("脚本执行结果")
+        new AlertDialog.Builder(getActivity()).setTitle(R.string.sh_result)
                 .setMessage(result)
-                .setPositiveButton("确定", null)
+                .setPositiveButton(android.R.string.ok, null)
                 .show();
     }
 }

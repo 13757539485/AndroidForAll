@@ -11,7 +11,7 @@ public class SettingApplication extends Application {
         super.onCreate();
         boolean haveRoot = ShellUtils.isRoot();
         if (!haveRoot) {
-            Toast.makeText(this, "未获取su权限", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.unable_to_get_root, Toast.LENGTH_SHORT).show();
         }
     }
 }

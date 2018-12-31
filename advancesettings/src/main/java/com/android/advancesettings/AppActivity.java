@@ -13,11 +13,15 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
+import android.os.Handler;
+import android.os.Message;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.Toast;
@@ -50,26 +54,62 @@ public class AppActivity extends PreferenceActivity implements View.OnClickListe
     private static final int SYSTEM_DATA = 2;
     private static final int USER_DATA = 3;
     private static final int DISABLE_DATA = 4;
-    private int mCurrentData = 1;
+    private int mCurrentData = USER_DATA;
     private static final String BACK_PATH = Environment.getExternalStorageDirectory().getPath() + "/高级设置备份目录";
+    private LoadAppData mLoadAppData;
+    private Handler mHandler = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+            int what = msg.what;
+            switch (what) {
+                case 100:
+                    mProgressDialog.dismiss();
+                    if (mCurrentData == ALL_DATA) {
+                        mAppAdapter.addAll(mAllApps, true, mSearchText);
+                    } else if (mCurrentData == SYSTEM_DATA) {
+                        mAppAdapter.addAll(mSystemApps, true, mSearchText);
+                    } else if (mCurrentData == USER_DATA) {
+                        mAppAdapter.addAll(mUserApps, true, mSearchText);
+                    } else if (mCurrentData == DISABLE_DATA) {
+                        mAppAdapter.addAll(mDisableApps, true, mSearchText);
+                    }
+                    break;
+                case 200:
+                    Toast.makeText(AppActivity.this, R.string.app_protect, Toast.LENGTH_SHORT).show();
+                    break;
+            }
+            return false;
+        }
+    });
+    private EditText mSearchView;
+    private String mSearchText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(miui.R.style.Theme_Light_Settings);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app);
-        setTitle("应用列表");
+        setTitle(R.string.app_title);
         initPopupWindow();
-        mMenuView = findViewById(R.id.menu_button);
-        mRefrigeratorView = findViewById(R.id.refrigerator);
-        mDeleteView = findViewById(R.id.delete);
-        //TextView emptyView = findViewById(android.R.id.empty);
+        initUi();
+        initListener();
+        mLoadAppData = new LoadAppData();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mHandler.removeCallbacks(mLoadAppData);
+        showWaitDialog(getString(R.string.app_title));
+        new Thread(mLoadAppData).start();
+    }
+
+    private void initListener() {
         mMenuView.setOnClickListener(this);
         mRefrigeratorView.setOnClickListener(this);
         mDeleteView.setOnClickListener(this);
         mAppAdapter = new AppAdapter(this);
         getListView().setAdapter(mAppAdapter);
-        //getListView().setEmptyView(emptyView);
         getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -86,31 +126,43 @@ public class AppActivity extends PreferenceActivity implements View.OnClickListe
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 if (!mAppAdapter.isMultipleMode()) {
-                    mAppAdapter.setMultipleMode(true);
+                    mAppAdapter.setMultipleMode(true, true);
                     checkMultipleMode(false, false, true);
                 }
                 return true;
             }
         });
-
-        new AsyncTask<Void, Void, Void>() {
+        mSearchView.addTextChangedListener(new TextWatcher() {
             @Override
-            protected void onPreExecute() {
-                showWaitDialog("获取应用列表");
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
             }
 
             @Override
-            protected Void doInBackground(Void... voids) {
-                initInstalledApps();
-                return null;
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
             }
 
             @Override
-            protected void onPostExecute(Void aVoid) {
-                mProgressDialog.dismiss();
-                mAppAdapter.addAll(mAllApps, false);
+            public void afterTextChanged(Editable s) {
+                mSearchText = s.toString().trim();
+                mAppAdapter.setSearchText(mSearchText);
+                mAppAdapter.getFilter().filter(mSearchText);
             }
-        }.execute();
+        });
+        mAppAdapter.setOnAppAddFinishListener(new AppAdapter.OnAppAddFinishListener() {
+            @Override
+            public void onSizeChange(int size) {
+                mSearchView.setHint(getString(R.string.search_app_number, size));
+            }
+        });
+    }
+
+    private void initUi() {
+        mSearchView = findViewById(R.id.search_edit);
+        mMenuView = findViewById(R.id.menu_button);
+        mRefrigeratorView = findViewById(R.id.refrigerator);
+        mDeleteView = findViewById(R.id.delete);
     }
 
     @Override
@@ -118,16 +170,16 @@ public class AppActivity extends PreferenceActivity implements View.OnClickListe
         if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
             if (event.getAction() == KeyEvent.ACTION_DOWN && event.getRepeatCount() == 0) {
                 if (mCurrentData == DISABLE_DATA) {
-                    mCurrentData = ALL_DATA;
-                    mAppAdapter.addAll(mAllApps, true);
+                    mCurrentData = USER_DATA;
+                    mAppAdapter.addAll(mUserApps, true, mSearchText);
                     checkMultipleMode(true, true, false);
                     if (mAppAdapter.isMultipleMode()) {
-                        mAppAdapter.setMultipleMode(false);
+                        mAppAdapter.setMultipleMode(false, true);
                     }
                     return true;
                 } else {
                     if (mAppAdapter.isMultipleMode()) {
-                        mAppAdapter.setMultipleMode(false);
+                        mAppAdapter.setMultipleMode(false, true);
                         checkMultipleMode(true, true, false);
                         return true;
                     }
@@ -168,6 +220,7 @@ public class AppActivity extends PreferenceActivity implements View.OnClickListe
         mAllApps.clear();
         mSystemApps.clear();
         mUserApps.clear();
+        mDisableApps.clear();
         PackageManager packageManager = getPackageManager();
         List<PackageInfo> allPackageInfos = packageManager.getInstalledPackages(PackageManager.GET_UNINSTALLED_PACKAGES);
         for (PackageInfo packageInfo : allPackageInfos) {
@@ -200,7 +253,12 @@ public class AppActivity extends PreferenceActivity implements View.OnClickListe
 
     private void showListDialog(final boolean isRecovery) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        String[] items = new String[]{"打开", "查看", isRecovery ? "解冻" : "冻结", "卸载", "提取"};
+        String[] items = new String[]{getString(R.string.app_function_open),
+                getString(R.string.app_function_read),
+                isRecovery ? getString(R.string.app_function_thaw) :
+                        getString(R.string.app_function_freeze),
+                getString(R.string.app_function_uninstall),
+                getString(R.string.app_function_extract)};
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -211,7 +269,9 @@ public class AppActivity extends PreferenceActivity implements View.OnClickListe
                         if (launcherIntent != null) {
                             startActivity(launcherIntent);
                         } else {
-                            Toast.makeText(AppActivity.this, "此应用无法启动！", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AppActivity.this,
+                                    getString(R.string.application_cannot_be_started),
+                                    Toast.LENGTH_SHORT).show();
                         }
                         break;
                     case 1:
@@ -224,7 +284,8 @@ public class AppActivity extends PreferenceActivity implements View.OnClickListe
                         new AsyncTask<Void, Void, Void>() {
                             @Override
                             protected void onPreExecute() {
-                                showWaitDialog(isRecovery ? "解冻" : "冻结");
+                                showWaitDialog(isRecovery ? getString(R.string.app_function_thaw)
+                                        : getString(R.string.app_function_freeze));
                             }
 
                             @Override
@@ -265,7 +326,9 @@ public class AppActivity extends PreferenceActivity implements View.OnClickListe
                         break;
                     case 3:
                         if (item.isSystem()) {
-                            showWarnDialog("这是系统应用，此操作不可逆，确认卸载吗？可能会导致系统异常");
+                            showWarnDialog(getString(R.string.application_system_warning));
+                        } else {
+                            new DeleteApk().execute();
                         }
                         break;
                     case 4:
@@ -282,7 +345,7 @@ public class AppActivity extends PreferenceActivity implements View.OnClickListe
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected void onPreExecute() {
-                showWaitDialog("提取应用");
+                showWaitDialog(getString(R.string.extract_app));
             }
 
             @Override
@@ -292,7 +355,7 @@ public class AppActivity extends PreferenceActivity implements View.OnClickListe
                     file.mkdir();
                 }
                 String apkPath = appBean.getApkPath();
-                String name = appBean.getTitle().replaceAll(" ","\\\\ ");
+                String name = appBean.getTitle().replaceAll(" ", "\\\\ ");
                 ShellUtils.execCommand("cp " + apkPath + " " + BACK_PATH + File.separator + name + ".apk");
                 return null;
             }
@@ -307,14 +370,14 @@ public class AppActivity extends PreferenceActivity implements View.OnClickListe
 
     private void showWarnDialog(String msg) {
         AlertDialog dialog = new AlertDialog.Builder(this)
-                .setTitle("危险提醒")
+                .setTitle(getString(R.string.danger_warning))
                 .setMessage(msg)
-                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         new DeleteApk().execute();
                     }
-                }).setNegativeButton("取消", null)
+                }).setNegativeButton(android.R.string.cancel, null)
                 .create();
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
@@ -322,11 +385,11 @@ public class AppActivity extends PreferenceActivity implements View.OnClickListe
 
     private void showResultDialog(AppBean appBean) {
         AlertDialog dialog = new AlertDialog.Builder(this)
-                .setTitle("提取结果")
-                .setMessage("已提取至"+ BACK_PATH +
+                .setTitle(R.string.result_of_extract)
+                .setMessage(getString(R.string.already_extract_to) + BACK_PATH +
                         File.separator + appBean.getTitle() + ".apk")
-                .setPositiveButton("确定", null)
-                .setNegativeButton("取消", null)
+                .setPositiveButton(android.R.string.ok, null)
+                .setNegativeButton(android.R.string.cancel, null)
                 .create();
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
@@ -348,34 +411,37 @@ public class AppActivity extends PreferenceActivity implements View.OnClickListe
             case R.id.all_app_layout:
                 if (mCurrentData != ALL_DATA) {
                     mCurrentData = ALL_DATA;
-                    mAppAdapter.addAll(mAllApps, true);
+                    mAppAdapter.addAll(mAllApps, true, mSearchText);
+                    mWindow.dismiss();
                 }
                 break;
             case R.id.system_app_layout:
                 if (mCurrentData != SYSTEM_DATA) {
                     mCurrentData = SYSTEM_DATA;
-                    mAppAdapter.addAll(mSystemApps, true);
+                    mAppAdapter.addAll(mSystemApps, true, mSearchText);
+                    mWindow.dismiss();
                 }
                 break;
             case R.id.user_app_layout:
                 if (mCurrentData != USER_DATA) {
                     mCurrentData = USER_DATA;
-                    mAppAdapter.addAll(mUserApps, true);
+                    mAppAdapter.addAll(mUserApps, true, mSearchText);
+                    mWindow.dismiss();
                 }
                 break;
             case R.id.refrigerator:
                 if (mCurrentData != DISABLE_DATA) {
                     checkMultipleMode(false, true, false);
                     mCurrentData = DISABLE_DATA;
-                    mAppAdapter.addAll(mDisableApps, true);
+                    mAppAdapter.addAll(mDisableApps, true, mSearchText);
                 }
                 break;
             case R.id.delete:
                 if (mAppAdapter.getSelectItems().size() <= 0) {
-                    Toast.makeText(this, "未选择卸载应用！", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.no_select_uninstall_app, Toast.LENGTH_SHORT).show();
                     return;
                 }
-                showWarnDialog("确定一键卸载？");
+                showWarnDialog(getString(R.string.sure_to_uninstall));
                 break;
         }
     }
@@ -383,7 +449,7 @@ public class AppActivity extends PreferenceActivity implements View.OnClickListe
     private class DeleteApk extends AsyncTask {
         @Override
         protected void onPreExecute() {
-            showWaitDialog("卸载应用");
+            showWaitDialog(getString(R.string.uninstall_app));
         }
 
         @Override
@@ -401,24 +467,24 @@ public class AppActivity extends PreferenceActivity implements View.OnClickListe
 
         @Override
         protected void onPostExecute(Object o) {
-            mProgressDialog.dismiss();
-            if (mAppAdapter.isMultipleMode()) {
-                mAppAdapter.removeSelectItems();
-            } else {
-                AppBean item = mAppAdapter.getItem(mCurrentItemPosition);
-                boolean disable = item.isDisable();
-                if (disable) {
-                    mDisableApps.remove(item);
-                } else {
-                    if (item.isSystem()) {
-                        mSystemApps.remove(item);
-                    } else {
-                        mUserApps.remove(item);
-                    }
-                    mAllApps.remove(item);
-                }
-                mAppAdapter.remove(item);
+            initInstalledApps();
+            switch (mCurrentData) {
+                case ALL_DATA:
+                    mAppAdapter.addAll(mAllApps, true, mSearchText);
+                    break;
+                case USER_DATA:
+                    mAppAdapter.addAll(mUserApps, true, mSearchText);
+                    break;
+                case SYSTEM_DATA:
+                    mAppAdapter.addAll(mSystemApps, true, mSearchText);
+                    break;
             }
+            if (mAppAdapter.isMultipleMode()) {
+                mAppAdapter.setMultipleMode(false, false);
+                checkMultipleMode(true, true, false);
+            }
+            mAppAdapter.notifyDataSetChanged();
+            mProgressDialog.dismiss();
         }
     }
 
@@ -427,18 +493,40 @@ public class AppActivity extends PreferenceActivity implements View.OnClickListe
             mProgressDialog = new ProgressDialog(AppActivity.this);
         }
         mProgressDialog.setTitle(title);
-        mProgressDialog.setMessage("请稍后...");
+        mProgressDialog.setMessage(getString(R.string.waiting));
         mProgressDialog.setCancelable(false);
         mProgressDialog.show();
     }
 
     private void uninstall(AppBean appBean) {
+        String appPackage = appBean.getAppPackage();
+        if (getPackageName().equals(appPackage)) {
+            mHandler.sendEmptyMessage(200);
+            return;
+        }
         boolean system = appBean.isSystem();
         if (system) {
-            ShellUtils.execCommand("pm uninstall --user 0 " + appBean.getAppPackage());
+            ShellUtils.execCommand("pm uninstall --user 0 " + appPackage);
             ShellUtils.execCommand("rm -rf " + appBean.getApkPath());
         } else {
-            ShellUtils.execCommand("pm uninstall " + appBean.getAppPackage());
+            ShellUtils.execCommand("pm uninstall " + appPackage);
         }
+    }
+
+    private class LoadAppData implements Runnable {
+
+        @Override
+        public void run() {
+            initInstalledApps();
+            mHandler.sendEmptyMessage(100);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (mWindow != null && mWindow.isShowing()) {
+            mWindow.dismiss();
+        }
+        super.onDestroy();
     }
 }

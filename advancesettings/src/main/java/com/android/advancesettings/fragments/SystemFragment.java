@@ -27,7 +27,7 @@ public class SystemFragment extends BaseFragment implements Preference.OnPrefere
             this.mDensity.setText(this.mCurrentDPI);
             this.mDensity.setDefaultValue(this.mCurrentDPI);
             this.mDensity.toString();
-            this.mDensity.setSummary("DPI值：" + this.mCurrentDPI);
+            this.mDensity.setSummary(getString(R.string.dpi_value, mCurrentDPI));
             this.mDensity.setOnPreferenceChangeListener(this);
         } catch (IOException localIOException) {
             while (true) {
@@ -45,13 +45,13 @@ public class SystemFragment extends BaseFragment implements Preference.OnPrefere
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         String str = (String) newValue;
         if (str.equals(mCurrentDPI)) {
-            mDensity.setSummary("DPI值：" + mCurrentDPI);
+            mDensity.setSummary(getString(R.string.dpi_value, mCurrentDPI));
             return true;
         }
         try {
             int i = Integer.parseInt(str);
             if (i < 100 || i > 540) {
-                Toast.makeText(getActivity(), "请输入100到540之间的数字", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), R.string.input_valid_number, Toast.LENGTH_LONG).show();
                 return false;
             }
             ShellUtils.execCommand("mount -o rw,remount /system");
@@ -60,9 +60,9 @@ public class SystemFragment extends BaseFragment implements Preference.OnPrefere
                 ShellUtils.catCommand(String.format("busybox sed -i 's/ro.sf.lcd_density=%s/ro.sf.lcd_density=%s/g' /system/build.prop\n", new Object[]{mCurrentDPI, str}));
                 if (ShellUtils.catCommand("cat /system/build.prop | busybox grep \"ro.sf.lcd_density\"\n").contains(str)) {
                     mCurrentDPI = str;
-                    Toast.makeText(getActivity(), "修改成功，手动重启生效", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), R.string.modify_successful_after_reboot, Toast.LENGTH_LONG).show();
                 }
-                mDensity.setSummary("DPI值：" + str);
+                mDensity.setSummary(getString(R.string.dpi_value, str));
                 return true;
             } catch (IOException | InterruptedException localIOException) {
                 localIOException.printStackTrace();

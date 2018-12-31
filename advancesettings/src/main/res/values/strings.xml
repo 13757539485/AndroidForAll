@@ -6,8 +6,45 @@
         <item quantity="one">%d°C</item>
     </plurals>
     <string name="no_weather_description">获取天气数据 ></string>
-    <string name="title_activity_xxx">xxxActivity</string>
+    <!--app-->
     <string name="all_application">所有应用</string>
     <string name="system_application">系统应用</string>
     <string name="third_application">第三方应用</string>
+    <string name="search_app_number">搜索%d个应用程序</string>
+    <string name="app_title">获取应用列表</string>
+    <string name="app_function_open">打开</string>
+    <string name="app_function_read">查看</string>
+    <string name="app_function_thaw">解冻</string>
+    <string name="app_function_freeze">冻结</string>
+    <string name="app_function_uninstall">卸载</string>
+    <string name="app_function_extract">提取</string>
+    <string name="application_cannot_be_started">此应用无法启动！</string>
+    <string name="application_system_warning">这是系统应用，此操作不可逆，确认卸载吗？可能会导致系统异常</string>
+    <string name="extract_app">提取应用</string>
+    <string name="danger_warning">危险提醒</string>
+    <string name="no_select_uninstall_app">未选择卸载应用！</string>
+    <string name="sure_to_uninstall">确定一键卸载？</string>
+    <string name="uninstall_app">卸载应用</string>
+    <string name="already_extract_to">已提取至</string>
+    <string name="result_of_extract">提取结果</string>
+    <string name="waiting">请稍后...</string>
+    <!--wifi-->
+    <string name="wifi_title">Wifi列表</string>
+    <string name="unable_to_get_root">无法获取Root</string>
+    <string name="already_copy">已复制到剪切版！</string>
+    <string name="copy_username">复制帐号</string>
+    <string name="copy_pwd">复制密码</string>
+    <string name="copy_username_and_pwd">复制帐号和密码</string>
+    <string name="more_operation">更多操作</string>
+    <string name="wifi_name">WIFI名称:%s</string>
+    <string name="wifi_pwd">WIFI密码:%s</string>
+    <!--setting-->
+    <string name="tab_system">系统</string>
+    <string name="tab_other">其他</string>
+    <!--fragment-->
+    <string name="sh_result">脚本执行结果</string>
+    <string name="dpi_value">DPI值：%s</string>
+    <string name="modify_successful_after_reboot">修改成功，手动重启生效</string>
+    <string name="input_valid_number">请输入100到540之间的数字</string>
+    <string name="app_protect">此应用不允许卸载</string>
 </resources>

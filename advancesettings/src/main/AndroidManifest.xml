@@ -30,17 +30,13 @@
         </activity>
         <activity
             android:name=".AppActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="com.android.advance.UNINSTALL"/>
 
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".xxxActivity"
-            android:label="@string/title_activity_xxx"
-            android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>
 

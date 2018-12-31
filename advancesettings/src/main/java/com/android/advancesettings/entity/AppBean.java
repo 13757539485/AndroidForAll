@@ -88,8 +88,6 @@ public class AppBean {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
         AppBean appBean = (AppBean) o;
         return Objects.equals(appPackage, appBean.appPackage);
     }
