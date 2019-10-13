@@ -18,7 +18,8 @@ public class ShellUtils {
     public final static String COMMAND_SH       = "sh ";
     public final static String COMMAND_EXIT     = "exit\n";
     public final static String COMMAND_LINE_END = "\n";
-    public final static String COMMAND_MOUNT_SYSTEM = "mount -o rw,remount /system && chmod 755 ";
+    public final static String COMMAND_MOUNT_SYSTEM = "mount -o rw,remount /system";
+    public final static String COMMAND_MOUNT_DATA = "mount -o rw,remount /data";
 
     /**
      * 执行命令—单条
@@ -149,10 +150,21 @@ public class ShellUtils {
     }
 
     public static boolean mountData() {
-        ShellResult shellResult = execCommand("system/bin/mount -o rw,remount -t rootfs /data");
+        ShellResult shellResult = execCommand(COMMAND_MOUNT_DATA);
         int result = shellResult.getResult();
         Log.e(TAG, "mountData: " + shellResult);
         return result == 0;
+    }
+
+    public static boolean mountSystem() {
+        ShellResult shellResult = execCommand(COMMAND_MOUNT_SYSTEM);
+        int result = shellResult.getResult();
+        Log.e(TAG, "mountSystem: " + shellResult);
+        return result == 0;
+    }
+
+    public static void reboot() {
+        execCommand("reboot");
     }
 
     public static String catCommand(String command) throws IOException {

@@ -35,9 +35,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import miui.app.ProgressDialog;
-import miui.preference.PreferenceActivity;
 
-public class AppActivity extends PreferenceActivity implements View.OnClickListener {
+public class AppActivity extends BaseActivity implements View.OnClickListener {
 
     private AppAdapter mAppAdapter;
     private PopupWindow mWindow;
@@ -85,9 +84,7 @@ public class AppActivity extends PreferenceActivity implements View.OnClickListe
     private String mSearchText;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        setTheme(miui.R.style.Theme_Light_Settings);
-        super.onCreate(savedInstanceState);
+    public void onBaseOnCreate(Bundle bundle) {
         setContentView(R.layout.activity_app);
         setTitle(R.string.app_title);
         initPopupWindow();

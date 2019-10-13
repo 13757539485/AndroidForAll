@@ -128,8 +128,6 @@ public class AppAdapter extends BaseAdapter implements Filterable {
         String appPackage = item.getAppPackage();
         if (item.isSystem()) {
             holder.mTitleTextView.setTextColor(Color.RED);
-        } else {
-            holder.mTitleTextView.setTextColor(Color.GRAY);
         }
         if (isSearchMode()) {
             ColorGenerator.setViewTextByFilterColor(holder.mTitleTextView, title, mSearchText, disable);

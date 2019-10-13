@@ -23,9 +23,7 @@ import com.android.advancesettings.utils.ShellUtils;
 import java.util.ArrayList;
 import java.util.Map;
 
-import miui.preference.PreferenceActivity;
-
-public class WifiActivity extends PreferenceActivity implements AdapterView.OnItemClickListener {
+public class WifiActivity extends BaseActivity implements AdapterView.OnItemClickListener {
 
     private ListView mWifiList;
     private WifiAdapter mWifiAdapter;
@@ -47,9 +45,7 @@ public class WifiActivity extends PreferenceActivity implements AdapterView.OnIt
     private int mCurrentItemPosition;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        setTheme(miui.R.style.Theme_Light_Settings);
-        super.onCreate(savedInstanceState);
+    public void onBaseOnCreate(Bundle bundle) {
         miui.app.ActionBar actionBar = getActionBar();
         actionBar.setTitle(R.string.wifi_title);
         if (ShellUtils.mountData()) {

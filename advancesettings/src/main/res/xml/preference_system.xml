@@ -5,16 +5,48 @@
     </PreferenceCategory>
     <PreferenceCategory android:title="WLAN密码">
         <PreferenceScreen
+            android:key="wifi"
             android:summary="查看已连接过的WiFi名称及密码"
             android:title="WLAN密码">
-            <intent android:action="com.android.advance.LIST_WIFI"/>
         </PreferenceScreen>
     </PreferenceCategory>
     <PreferenceCategory android:title="应用管理">
         <PreferenceScreen
+            android:key="app"
             android:summary="卸载普通应用甚至系统应用"
             android:title="应用卸载器">
-            <intent android:action="com.android.advance.UNINSTALL"/>
         </PreferenceScreen>
     </PreferenceCategory>
+
+    <PreferenceCategory android:title="sky-mi功能">
+        <PreferenceScreen
+            android:summary="解除系统温度控制"
+            android:key="wk"
+            android:title="温控">
+        </PreferenceScreen>
+
+        <PreferenceScreen
+            android:summary="开启或者关闭拦截"
+            android:key="host"
+            android:title="host拦截">
+        </PreferenceScreen>
+        <PreferenceScreen
+            android:summary="Android自身拦截机制，拦截名单中的服务，广播等"
+            android:key="ifw"
+            android:title="IFW开关">
+        </PreferenceScreen>
+
+        <PreferenceScreen
+            android:summary="切换模式(性能、省电等)"
+            android:key="pptd"
+            android:title="射频调度">
+        </PreferenceScreen>
+
+        <PreferenceScreen
+            android:summary="打开系统隐藏的入口"
+            android:key="qtsz"
+            android:title="系统相关设置">
+        </PreferenceScreen>
+    </PreferenceCategory>
+
 </PreferenceScreen>

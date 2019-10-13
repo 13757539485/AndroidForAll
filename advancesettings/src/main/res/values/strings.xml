@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AdvanceSettings</string>
+    <string name="app_name">高级设置</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <plurals name="tempuare">
@@ -39,7 +39,7 @@
     <string name="wifi_name">WIFI名称:%s</string>
     <string name="wifi_pwd">WIFI密码:%s</string>
     <!--setting-->
-    <string name="tab_system">系统</string>
+    <string name="tab_system">@string/app_name</string>
     <string name="tab_other">其他</string>
     <!--fragment-->
     <string name="sh_result">脚本执行结果</string>
@@ -47,4 +47,16 @@
     <string name="modify_successful_after_reboot">修改成功，手动重启生效</string>
     <string name="input_valid_number">请输入100到540之间的数字</string>
     <string name="app_protect">此应用不允许卸载</string>
+    <string name="delete">删除</string>
+    <string name="recovery">恢复</string>
+    <string name="close_dialog">关闭弹窗</string>
+    <string name="no_intercept">无拦截</string>
+    <string name="only_remove_Ad">仅去广告</string>
+    <string name="force_intercept">强力拦截</string>
+    <string name="enable">开启</string>
+    <string name="disable">关闭</string>
+    <string name="tip">提示</string>
+    <string name="reboot_now">立刻重启</string>
+    <string name="not_reboot">自行重启</string>
+    <string name="reboot_message">是否立刻重启还是自行去更多里重启？</string>
 </resources>
