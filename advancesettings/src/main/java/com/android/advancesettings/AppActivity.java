@@ -399,11 +399,12 @@ public class AppActivity extends BaseActivity implements View.OnClickListener {
             case R.id.menu_button:
                 // 显示PopupWindow，其中：
                 // 第一个参数是PopupWindow的锚点，第二和第三个参数分别是PopupWindow相对锚点的x、y偏移
-                mWindow.showAsDropDown(v, 0, 0);
+//                mWindow.showAsDropDown(v, 0, 0);
                 // 或者也可以调用此方法显示PopupWindow，其中：
                 // 第一个参数是PopupWindow的父View，第二个参数是PopupWindow相对父View的位置，
                 // 第三和第四个参数分别是PopupWindow相对父View的x、y偏移
                 // window.showAtLocation(parent, gravity, x, y);
+                showTypeDialog();
                 break;
             case R.id.all_app_layout:
                 if (mCurrentData != ALL_DATA) {
@@ -441,6 +442,44 @@ public class AppActivity extends BaseActivity implements View.OnClickListener {
                 showWarnDialog(getString(R.string.sure_to_uninstall));
                 break;
         }
+    }
+
+    private void showTypeDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        String[] items = new String[]{
+                getString(R.string.all_application),
+                getString(R.string.system_application),
+                getString(R.string.third_application)};
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case 0:
+                        if (mCurrentData != ALL_DATA) {
+                            mCurrentData = ALL_DATA;
+                            mAppAdapter.addAll(mAllApps, true, mSearchText);
+                            mWindow.dismiss();
+                        }
+                        break;
+                    case 1:
+                        if (mCurrentData != SYSTEM_DATA) {
+                            mCurrentData = SYSTEM_DATA;
+                            mAppAdapter.addAll(mSystemApps, true, mSearchText);
+                            mWindow.dismiss();
+                        }
+                        break;
+                    case 2:
+                        if (mCurrentData != USER_DATA) {
+                            mCurrentData = USER_DATA;
+                            mAppAdapter.addAll(mUserApps, true, mSearchText);
+                            mWindow.dismiss();
+                        }
+                        break;
+                }
+                dialog.dismiss();
+            }
+        });
+        builder.show();
     }
 
     private class DeleteApk extends AsyncTask {

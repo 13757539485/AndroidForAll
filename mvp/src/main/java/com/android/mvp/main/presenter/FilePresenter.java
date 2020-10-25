@@ -1,5 +1,6 @@
 package com.android.mvp.main.presenter;
 
+
 import android.content.Context;
 
 import com.android.mvp.base.XBasePresenter;

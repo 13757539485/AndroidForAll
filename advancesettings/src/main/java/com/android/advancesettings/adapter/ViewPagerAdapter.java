@@ -2,8 +2,8 @@ package com.android.advancesettings.adapter;
 
 import android.app.FragmentManager;
 import android.preference.PreferenceFragment;
-import android.support.annotation.Nullable;
-import android.support.v13.app.FragmentPagerAdapter;
+import androidx.annotation.Nullable;
+import androidx.legacy.app.FragmentPagerAdapter;
 
 import java.util.ArrayList;
 

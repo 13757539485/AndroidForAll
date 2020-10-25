@@ -136,6 +136,10 @@ public class SystemFragment extends BaseFragment implements Preference.OnPrefere
                 if (which != items.length - 1) {
                     SPManager.getInstance(getActivity()).putInt(key, which);
                 }
+                if (which == items.length - 1) {
+                    dialog.dismiss();
+                    return;
+                }
                 switch (position) {
                     case Constant.WK:
                         dealWK(dialog, which);

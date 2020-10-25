@@ -2,6 +2,7 @@ package com.android.androidforall;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -54,8 +55,40 @@ public class MainActivity extends Activity {
         //mMobileVivo = findViewById(R.id.mobile_vivo);
         //mMiuiLayout = findViewById(R.id.miui_layout);
         //mMiuiLayout.removeView(mMobileVivo);
+        Log.d(TAG, "onCreate: ");
+
     }
 
+    private static class MyTask extends AsyncTask<Void, Void, Void>{
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        Log.d(TAG, "onResume: ");
+        super.onResume();
+    }
+
+    @Override
+    protected void onStart() {
+        Log.d(TAG, "onStart: ");
+        super.onStart();
+    }
+
+    @Override
+    protected void onRestart() {
+        Log.d(TAG, "onRestart: ");
+        super.onRestart();
+    }
 
     public ViewGroup getMobileInoutLayout() {
         LinearLayout first = new LinearLayout(this);

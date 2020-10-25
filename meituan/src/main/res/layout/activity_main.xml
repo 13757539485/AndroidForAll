@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/pager_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/dp_55"
+        android:gravity="center"
+        android:text="内容显示"
+        android:textSize="@dimen/sp_25" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/pagerindicator"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_69"
+        android:layout_gravity="bottom"
+        android:background="@android:color/transparent"
+        android:gravity="center">
+
+        <com.android.meituan.HomeBottomView
+            android:id="@+id/bottom_home_tab"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical" />
+
+        <com.android.meituan.HomeBottomView
+            android:id="@+id/bottom_vip_tab"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical" />
+
+        <com.android.meituan.HomeBottomView
+            android:id="@+id/bottom_order_tab"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical" />
+
+        <com.android.meituan.HomeBottomView
+            android:id="@+id/bottom_my_tab"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</merge>

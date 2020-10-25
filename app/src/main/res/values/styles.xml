@@ -6,6 +6,15 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textAppearance">@style/hybrid_notification_title</item>
+    </style>
+
+    <style name="TextAppearanceCustom">
+        <item name="android:color">#ff9955</item>
+    </style>
+    
+    <style name="hybrid_notification_title">
+        <item name="android:color">#99ff99</item>
     </style>
 
 </resources>

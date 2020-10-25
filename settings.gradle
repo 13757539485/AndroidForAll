@@ -1,1 +1,1 @@
-include ':app', ':mvp', ':advancesettings'
+include ':app', ':mvp', ':advancesettings', ':meituan', ':common'
